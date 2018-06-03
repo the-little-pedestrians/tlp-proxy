@@ -15,9 +15,9 @@ LABEL maintainer="Thomas Sauvajon <thomas.sauvajon.dev@gmail.com>"
 
 ENV PORT=80
 
-COPY --from=build /go/src/github.com/the-little-pedestrians/tlp-proxy/tlp-proxy .
+COPY --from=build /go/src/github.com/the-little-pedestrians/tlp-proxy/tlp-proxy /bin/tlp-proxy
 
-RUN chmod +x tlp-proxy
+RUN chmod +x /bin/tlp-proxy
 
 CMD ["tlp-proxy"]
 
