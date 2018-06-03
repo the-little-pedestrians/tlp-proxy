@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httputil"
+	"net/url"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -19,14 +20,15 @@ func (app *Server) reverseProxy(target string) gin.HandlerFunc {
 		fmt.Println("request URL: " + c.Request.URL.String())
 		fmt.Println("target: " + target)
 
-		proxy := httputil.ReverseProxy{
-			Director: func(r *http.Request) {
-				req := c.Request
-				r = req
-				r.Host = target
-				r.URL.Host = r.Host
-				r.URL.Scheme = "http"
-			},
+		proxy := httputil.NewSingleHostReverseProxy(&url.URL{
+			Scheme: "http",
+			Host:   target,
+		})
+
+		proxy.Director = func(r *http.Request) {
+			r.Host = target
+			r.URL.Host = r.Host
+			r.URL.Scheme = "http"
 		}
 
 		proxy.ServeHTTP(c.Writer, c.Request)
