@@ -57,13 +57,15 @@ func (app *Server) initializeRouter() {
 
 	graphql := app.Router.Group("/graphql")
 	{
-		// Redirect /graphql/* to the backend
+		// Redirect /graphql(/)* to the backend
+		graphql.GET("", app.reverseProxy(backendURL))
 		graphql.GET("/*anything", app.reverseProxy(backendURL))
 	}
 
 	subscriptions := app.Router.Group("/subscriptions")
 	{
 		// http://localhost/subscriptions/* => http://{backendURL}/subscriptions/*
+		subscriptions.GET("", app.reverseProxy(backendURL))
 		subscriptions.GET("/*anything", app.reverseProxy(backendURL))
 	}
 }
