@@ -26,6 +26,8 @@ func (app *Server) reverseProxy(target string) gin.HandlerFunc {
 		})
 
 		proxy.Director = func(r *http.Request) {
+			req := c.Request
+			r = req
 			r.Host = target
 			r.URL.Host = r.Host
 			r.URL.Scheme = "http"
