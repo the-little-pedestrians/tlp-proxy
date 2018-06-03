@@ -57,6 +57,10 @@ func (app *Server) initializeRouter() {
 
 	app.Router.POST("/graphql", app.reverseProxy(backendURL))
 	app.Router.POST("/subscriptions", app.reverseProxy(backendURL))
+	app.Router.OPTIONS("/graphql", app.reverseProxy(backendURL))
+	app.Router.OPTIONS("/subscriptions", app.reverseProxy(backendURL))
+	app.Router.Any("/graphql", app.reverseProxy(backendURL))
+	app.Router.Any("/subscriptions", app.reverseProxy(backendURL))
 
 	graphql := app.Router.Group("/graphql")
 	{
