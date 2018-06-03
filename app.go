@@ -20,7 +20,7 @@ func (app *Server) reverseProxy(target string) gin.HandlerFunc {
 		fmt.Println("request URL: " + c.Request.URL.String())
 		fmt.Println("target: " + target)
 
-		proxy := httputil.NewSingleHostReverseProxy(&url.URL{
+		proxy := httputil.ReverseProxy(&url.URL{
 			Scheme: "http",
 			Host:   target,
 		})
